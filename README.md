@@ -74,6 +74,8 @@ The Emotion Detection & Mental Health Assistant is a sophisticated web applicati
 - A modern web browser (Chrome, Firefox, Safari, Edge)
 - No additional software or dependencies required
 
+### Live Demo
+Visit the [live demo](https://your-username.github.io/emotion-detection-app) to try the application immediately.
 
 ### Local Setup
 1. **Download the project**

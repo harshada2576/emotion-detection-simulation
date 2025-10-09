@@ -6,31 +6,52 @@
     <title>Emotion Detection & Mental Health Assistant</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
 </head>
 <body>
     <div class="container">
+        <!-- Accessibility Controls -->
+        <div class="accessibility-bar">
+            <button id="highContrastToggle" class="accessibility-btn" aria-label="Toggle high contrast mode">
+                🌙 High Contrast
+            </button>
+            <button id="largeTextToggle" class="accessibility-btn" aria-label="Toggle large text mode">
+                🔍 Large Text
+            </button>
+            <button id="reduceMotionToggle" class="accessibility-btn" aria-label="Toggle reduced motion">
+                ⏸️ Reduce Motion
+            </button>
+            <select id="languageSelector" class="language-selector" aria-label="Select language">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+
         <header>
-            <h1>🧠 Emotion Detection & Mental Health Assistant</h1>
-            <p class="subtitle">Project #70: AI-Powered Emotional Support System</p>
+            <h1 data-i18n="appTitle">🧠 Emotion Detection & Mental Health Assistant</h1>
+            <p class="subtitle" data-i18n="appSubtitle">Project #70: AI-Powered Emotional Support System</p>
         </header>
 
         <div class="main-content">
             <!-- Progress Tracking -->
             <div class="progress-section">
                 <div class="progress-card">
-                    <h3>📈 Your Progress</h3>
+                    <h3 data-i18n="progressTitle">📈 Your Progress</h3>
                     <div class="progress-stats">
                         <div class="stat">
                             <span class="stat-value" id="streakCount">0</span>
-                            <span class="stat-label">Day Streak</span>
+                            <span class="stat-label" data-i18n="dayStreak">Day Streak</span>
                         </div>
                         <div class="stat">
                             <span class="stat-value" id="sessionCount">0</span>
-                            <span class="stat-label">Sessions</span>
+                            <span class="stat-label" data-i18n="sessions">Sessions</span>
                         </div>
                         <div class="stat">
                             <span class="stat-value" id="achievementCount">0</span>
-                            <span class="stat-label">Achievements</span>
+                            <span class="stat-label" data-i18n="achievements">Achievements</span>
                         </div>
                     </div>
                     <div id="achievementsList" class="achievements-list"></div>
@@ -39,42 +60,61 @@
 
             <!-- Emotion Input Section -->
             <div class="input-section">
-                <h2>How are you feeling today?</h2>
+                <h2 data-i18n="howAreYouFeeling">How are you feeling today?</h2>
                 
                 <div class="input-methods">
                     <!-- Text Input -->
                     <div class="input-method">
-                        <h3>💬 Describe your feelings</h3>
-                        <textarea id="textInput" placeholder="Tell me how you're feeling today..."></textarea>
-                        <button id="analyzeTextBtn" class="analyze-btn">Analyze Emotion</button>
+                        <h3 data-i18n="describeFeelings">💬 Describe your feelings</h3>
+                        <textarea id="textInput" data-i18n-placeholder="textInputPlaceholder" placeholder="Tell me how you're feeling today..."></textarea>
+                        <div class="input-options">
+                            <button id="analyzeTextBtn" class="analyze-btn" data-i18n="analyzeEmotion">Analyze Emotion</button>
+                            <button id="advancedAnalysisBtn" class="advanced-btn" data-i18n="advancedAnalysis">Advanced Analysis</button>
+                        </div>
                     </div>
 
                     <!-- Voice Input -->
                     <div class="input-method">
-                        <h3>🎤 Speak your feelings</h3>
+                        <h3 data-i18n="speakFeelings">🎤 Speak your feelings</h3>
                         <div class="voice-controls">
-                            <button id="startRecording" class="voice-btn">
+                            <button id="startRecording" class="voice-btn" data-i18n="startRecording">
                                 🎤 Start Recording
                             </button>
-                            <button id="stopRecording" class="voice-btn" disabled>
+                            <button id="stopRecording" class="voice-btn" disabled data-i18n="stopRecording">
                                 ⏹️ Stop Recording
                             </button>
                         </div>
-                        <div id="voiceStatus" class="status">
+                        <div id="voiceStatus" class="status" data-i18n="voiceInstructions">
                             Click "Start Recording" and speak about your feelings
                         </div>
                     </div>
 
                     <!-- Facial Expression -->
                     <div class="input-method">
-                        <h3>😊 Select facial expression</h3>
+                        <h3 data-i18n="selectExpression">😊 Select facial expression</h3>
                         <div class="facial-expressions">
-                            <button class="emoji-btn" data-emotion="happy">😊 Happy</button>
-                            <button class="emoji-btn" data-emotion="sad">😢 Sad</button>
-                            <button class="emoji-btn" data-emotion="angry">😠 Angry</button>
-                            <button class="emoji-btn" data-emotion="surprised">😲 Surprised</button>
-                            <button class="emoji-btn" data-emotion="neutral">😐 Neutral</button>
-                            <button class="emoji-btn" data-emotion="anxious">😰 Anxious</button>
+                            <button class="emoji-btn" data-emotion="happy" aria-label="Happy expression">😊 <span data-i18n="happy">Happy</span></button>
+                            <button class="emoji-btn" data-emotion="sad" aria-label="Sad expression">😢 <span data-i18n="sad">Sad</span></button>
+                            <button class="emoji-btn" data-emotion="angry" aria-label="Angry expression">😠 <span data-i18n="angry">Angry</span></button>
+                            <button class="emoji-btn" data-emotion="surprised" aria-label="Surprised expression">😲 <span data-i18n="surprised">Surprised</span></button>
+                            <button class="emoji-btn" data-emotion="neutral" aria-label="Neutral expression">😐 <span data-i18n="neutral">Neutral</span></button>
+                            <button class="emoji-btn" data-emotion="anxious" aria-label="Anxious expression">😰 <span data-i18n="anxious">Anxious</span></button>
+                        </div>
+                    </div>
+
+                    <!-- Webcam Input (Advanced) -->
+                    <div class="input-method">
+                        <h3 data-i18n="webcamAnalysis">📷 Real-time Analysis</h3>
+                        <div id="cameraContainer" class="camera-container">
+                            <video id="webcam" width="300" height="225" autoplay muted aria-label="Webcam feed for emotion analysis"></video>
+                            <canvas id="faceCanvas" width="300" height="225"></canvas>
+                        </div>
+                        <div class="camera-controls">
+                            <button id="startCamera" class="camera-btn" data-i18n="startCamera">🎥 Start Camera</button>
+                            <button id="captureEmotion" class="camera-btn" disabled data-i18n="captureEmotion">📸 Capture Emotion</button>
+                        </div>
+                        <div id="cameraStatus" class="status" data-i18n="cameraInstructions">
+                            Enable camera for real-time facial analysis
                         </div>
                     </div>
                 </div>
@@ -82,7 +122,7 @@
 
             <!-- Results Section -->
             <div class="results-section" id="resultsSection" style="display: none;">
-                <h2>Emotion Analysis Results</h2>
+                <h2 data-i18n="analysisResults">Emotion Analysis Results</h2>
                 
                 <div class="emotion-card">
                     <div class="emotion-header">
@@ -90,25 +130,26 @@
                         <div>
                             <h3 id="detectedEmotion">Happy</h3>
                             <p id="confidence">Confidence: 85%</p>
+                            <p id="advancedInsights" class="advanced-insights" style="display: none;"></p>
                         </div>
                     </div>
                     
                     <div class="emotional-breakdown">
-                        <h4>Emotional Breakdown:</h4>
+                        <h4 data-i18n="emotionalBreakdown">Emotional Breakdown:</h4>
                         <div id="emotionChartContainer">
-                            <canvas id="emotionChart"></canvas>
+                            <canvas id="emotionChart" aria-label="Emotional breakdown chart"></canvas>
                         </div>
                     </div>
                 </div>
 
                 <!-- AI Response -->
                 <div class="ai-response">
-                    <h3>💭 Supportive Response</h3>
+                    <h3 data-i18n="supportiveResponse">💭 Supportive Response</h3>
                     <div id="aiResponse" class="response-text">
                         Loading response...
                     </div>
                     <div class="suggestions">
-                        <h4>💡 Suggestions for emotional well-being:</h4>
+                        <h4 data-i18n="suggestionsTitle">💡 Suggestions for emotional well-being:</h4>
                         <ul id="suggestionsList"></ul>
                     </div>
                 </div>
@@ -116,80 +157,139 @@
 
             <!-- Mental Health Exercises -->
             <div class="exercises-section">
-                <h2>🧘 Mental Health Exercises</h2>
-                <div class="exercise-cards">
-                    <div class="exercise-card" data-exercise="breathing">
-                        <h4>🌬️ Breathing Exercise</h4>
-                        <p>4-7-8 breathing technique for anxiety relief</p>
-                        <button class="start-exercise">Start Exercise</button>
+                <h2 data-i18n="mentalHealthExercises">🧘 Mental Health Exercises</h2>
+                <div class="exercise-categories">
+                    <button class="category-btn active" data-category="quick">Quick Exercises</button>
+                    <button class="category-btn" data-category="therapy">Therapy Techniques</button>
+                    <button class="category-btn" data-category="mindfulness">Mindfulness</button>
+                </div>
+                
+                <div class="exercise-cards" id="exerciseCards">
+                    <!-- Quick Exercises -->
+                    <div class="exercise-card" data-exercise="breathing" data-category="quick">
+                        <h4>🌬️ <span data-i18n="breathingExercise">Breathing Exercise</span></h4>
+                        <p data-i18n="breathingDescription">4-7-8 breathing technique for anxiety relief</p>
+                        <button class="start-exercise" data-i18n="startExercise">Start Exercise</button>
                     </div>
                     
-                    <div class="exercise-card" data-exercise="meditation">
-                        <h4>🧠 Quick Meditation</h4>
-                        <p>5-minute mindfulness practice</p>
-                        <button class="start-exercise">Start Exercise</button>
+                    <div class="exercise-card" data-exercise="meditation" data-category="quick">
+                        <h4>🧠 <span data-i18n="quickMeditation">Quick Meditation</span></h4>
+                        <p data-i18n="meditationDescription">5-minute mindfulness practice</p>
+                        <button class="start-exercise" data-i18n="startExercise">Start Exercise</button>
+                    </div>
+
+                    <!-- Therapy Techniques -->
+                    <div class="exercise-card" data-exercise="pmr" data-category="therapy">
+                        <h4>💪 <span data-i18n="progressiveRelaxation">Progressive Relaxation</span></h4>
+                        <p data-i18n="pmrDescription">Progressive muscle relaxation technique</p>
+                        <button class="start-exercise" data-i18n="startExercise">Start Exercise</button>
                     </div>
                     
-                    <div class="exercise-card" data-exercise="journal">
-                        <h4>📝 Guided Journaling</h4>
-                        <p>Structured emotional reflection</p>
-                        <button class="start-exercise">Start Exercise</button>
+                    <div class="exercise-card" data-exercise="cbt" data-category="therapy">
+                        <h4>🔄 <span data-i18n="cbtExercise">CBT Thought Record</span></h4>
+                        <p data-i18n="cbtDescription">Cognitive Behavioral Therapy exercise</p>
+                        <button class="start-exercise" data-i18n="startExercise">Start Exercise</button>
+                    </div>
+
+                    <!-- Mindfulness -->
+                    <div class="exercise-card" data-exercise="journal" data-category="mindfulness">
+                        <h4>📝 <span data-i18n="guidedJournaling">Guided Journaling</span></h4>
+                        <p data-i18n="journalDescription">Structured emotional reflection</p>
+                        <button class="start-exercise" data-i18n="startExercise">Start Exercise</button>
+                    </div>
+                    
+                    <div class="exercise-card" data-exercise="grounding" data-category="mindfulness">
+                        <h4>🌍 <span data-i18n="groundingExercise">Grounding Technique</span></h4>
+                        <p data-i18n="groundingDescription">5-4-3-2-1 sensory grounding</p>
+                        <button class="start-exercise" data-i18n="startExercise">Start Exercise</button>
                     </div>
                 </div>
                 
                 <div id="exerciseContainer" class="exercise-container" style="display: none;">
                     <div id="exerciseContent"></div>
-                    <button id="stopExercise" class="stop-exercise-btn">Stop Exercise</button>
+                    <button id="stopExercise" class="stop-exercise-btn" data-i18n="stopExercise">Stop Exercise</button>
                 </div>
             </div>
 
-            <!-- Analytics Dashboard -->
+            <!-- Advanced Analytics Dashboard -->
             <div class="analytics-section">
-                <h2>📊 Emotional Trends & Analytics</h2>
+                <h2 data-i18n="analyticsTitle">📊 Emotional Trends & Analytics</h2>
+                
+                <div class="analytics-controls">
+                    <select id="timeRangeSelector" class="time-selector">
+                        <option value="7" data-i18n="last7Days">Last 7 Days</option>
+                        <option value="30" data-i18n="last30Days">Last 30 Days</option>
+                        <option value="90" data-i18n="last90Days">Last 90 Days</option>
+                    </select>
+                    <button id="exportDataBtn" class="export-btn" data-i18n="exportData">📤 Export Data</button>
+                </div>
+
                 <div class="analytics-cards">
                     <div class="analytics-card">
-                        <h4>Weekly Mood Distribution</h4>
-                        <canvas id="moodChart"></canvas>
+                        <h4 data-i18n="weeklyMood">Weekly Mood Distribution</h4>
+                        <canvas id="moodChart" aria-label="Weekly mood distribution chart"></canvas>
                     </div>
                     <div class="analytics-card">
-                        <h4>Emotion Frequency</h4>
+                        <h4 data-i18n="emotionFrequency">Emotion Frequency</h4>
                         <div id="emotionFrequency" class="frequency-list">
                             <div class="frequency-item">
-                                <span>No data yet</span>
+                                <span data-i18n="noData">No data yet</span>
                                 <span>0 times</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="trends-card">
-                    <h4>📈 Emotional Trends Over Time</h4>
-                    <canvas id="trendsChart"></canvas>
-                </div>
-
-                <div class="community-insights">
-                    <h4>👥 Community Insights</h4>
-                    <div id="communityMessage" class="community-message">
-                        You're not alone in your emotional journey. Many people find comfort in daily check-ins.
+                <div class="advanced-charts">
+                    <div class="trends-card">
+                        <h4 data-i18n="emotionalTrends">📈 Emotional Trends Over Time</h4>
+                        <canvas id="trendsChart" aria-label="Emotional trends over time chart"></canvas>
+                    </div>
+                    
+                    <div class="heatmap-card">
+                        <h4 data-i18n="moodHeatmap">🎨 Mood Heatmap</h4>
+                        <div id="moodHeatmap" class="heatmap-container">
+                            <!-- Heatmap will be generated here -->
+                        </div>
                     </div>
                 </div>
 
-                <button id="generateReportBtn" class="report-btn">📄 Generate RPA Report</button>
-                <div id="reportOutput" class="report-output"></div>
+                <div class="community-insights">
+                    <h4 data-i18n="communityInsights">👥 Community Insights</h4>
+                    <div id="communityMessage" class="community-message">
+                        <span data-i18n="defaultCommunityMessage">You're not alone in your emotional journey. Many people find comfort in daily check-ins.</span>
+                    </div>
+                </div>
+
+                <div class="report-section">
+                    <button id="generateReportBtn" class="report-btn" data-i18n="generateReport">📄 Generate RPA Report</button>
+                    <button id="scheduleReportBtn" class="report-btn secondary" data-i18n="scheduleReport">⏰ Schedule Reports</button>
+                    <div id="reportOutput" class="report-output"></div>
+                </div>
             </div>
         </div>
 
         <!-- Session Info -->
         <div class="session-info">
-            <p><strong>Session started:</strong> <span id="sessionTime">Loading...</span></p>
-            <p><strong>Interactions:</strong> <span id="interactionCount">0</span></p>
-            <p><strong>Current Streak:</strong> <span id="currentStreak">0 days</span></p>
-            <button id="resetSessionBtn" class="reset-btn">🔄 Reset Session</button>
+            <p><strong data-i18n="sessionStarted">Session started:</strong> <span id="sessionTime">Loading...</span></p>
+            <p><strong data-i18n="interactions">Interactions:</strong> <span id="interactionCount">0</span></p>
+            <p><strong data-i18n="currentStreak">Current Streak:</strong> <span id="currentStreak">0 days</span></p>
+            <button id="resetSessionBtn" class="reset-btn" data-i18n="resetSession">🔄 Reset Session</button>
         </div>
+
+        <!-- Live Region for Accessibility -->
+        <div id="liveRegion" aria-live="polite" aria-atomic="true" class="sr-only"></div>
     </div>
 
+    <!-- JavaScript Files -->
+    <script src="i18n.js"></script>
+    <script src="accessibility-manager.js"></script>
     <script src="emotion-detector.js"></script>
+    <script src="advanced-emotion-detector.js"></script>
     <script src="interaction-engine.js"></script>
+    <script src="mental-health-exercises.js"></script>
+    <script src="progress-tracker.js"></script>
+    <script src="community-insights.js"></script>
     <script src="analytics.js"></script>
     <script src="script.js"></script>
 </body>
