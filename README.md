@@ -6,7 +6,7 @@
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chart.js&logoColor=white)
-[Live Demo](https://your-username.github.io/emotion-detection-app) · [Report Bug](https://github.com/your-username/emotion-detection-app/issues) · [Request Feature](https://github.com/your-username/emotion-detection-app/issues)
+
 
 </div>
 
@@ -18,7 +18,6 @@ A client-side web application that detects emotions (text, voice, facial input),
 
 - [About](#about)
 - [Features](#features)
-- [Demo & Screenshots](#demo--screenshots)
 - [Quick Start](#quick-start)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
@@ -168,3 +167,4 @@ For issues, feature requests, or questions, please open an issue in the reposito
 
 ---
 Built with care for privacy and accessibility.
+
