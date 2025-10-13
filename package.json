@@ -1,0 +1,21 @@
+{
+  "name": "emotion-detection-simulation",
+  "version": "1.0.0",
+  "description": "A client-side web application that detects emotions, offers AI-like supportive responses, and provides local analytics to help users monitor emotional wellbeing.",
+  "main": "script.js",
+  "scripts": {
+    "start": "http-server -c-1"
+  },
+  "keywords": [
+    "emotion-detection",
+    "mental-health",
+    "javascript",
+    "chartjs",
+    "tensorflowjs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
